@@ -12,7 +12,16 @@ use \React\Socket\Server as Socket;
 
 
 $loop = Factory::create();
-$server = new Server($loop, function () {});
+$server = new Server(
+    $loop,
+    function (ServerRequestInterface $request) {
+        return new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            json_encode(['message' => 'Hello'])
+        );
+    }
+);
 
 $socket = new Socket('0.0.0.0:8000', $loop);
 $server->listen($socket);
