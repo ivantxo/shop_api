@@ -46,7 +46,8 @@ final class Router
                 );
 
             case Dispatcher::FOUND:
-                return $routeInfo[1]($request);
+                $params = array_values($routeInfo[2]);
+                return $routeInfo[1]($request, ...$params);
         }
         throw new LogicException('Something went wrong');
     }

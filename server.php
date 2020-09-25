@@ -14,6 +14,9 @@ use FastRoute\RouteParser\Std;
 
 use App\Products\Controller\GetAllProducts;
 use App\Products\Controller\CreateProduct;
+use App\Products\Controller\GetProductById;
+use App\Products\Controller\DeleteProduct;
+use App\Products\Controller\UpdateProduct;
 use App\Router;
 
 
@@ -21,7 +24,10 @@ $loop = Factory::create();
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
 $routes->get('/products', new GetAllProducts());
+$routes->get('/products/{id:\d+}', new GetProductById());
 $routes->post('/products', new CreateProduct());
+$routes->delete('/products/{id:\d+}', new DeleteProduct());
+$routes->put('/products/{id:\d+}', new UpdateProduct());
 
 $server = new Server(
     $loop,
