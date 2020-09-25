@@ -10,6 +10,7 @@ use \React\Socket\Server as Socket;
 use FastRoute\RouteCollector;
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteParser\Std;
+use React\MySQL\Factory as MySQLFactory;
 
 
 use App\Core\Router;
@@ -23,6 +24,9 @@ use App\Products\Controller\UpdateProduct;
 
 
 $loop = Factory::create();
+
+$mysql = new MySQLFactory($loop);
+$connection = $mysql->createLazyConnection('root:mysql@localhost/shop_api');
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
 $routes->get('/products', new GetAllProducts());
