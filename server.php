@@ -11,6 +11,7 @@ use FastRoute\RouteCollector;
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteParser\Std;
 use React\MySQL\Factory as MySQLFactory;
+use Dotenv\Dotenv;
 
 
 use App\Core\Router;
@@ -25,8 +26,20 @@ use App\Products\Controller\UpdateProduct;
 
 $loop = Factory::create();
 
+$env = Dotenv::createImmutable(__DIR__);
+$env->load();
 $mysql = new MySQLFactory($loop);
-$connection = $mysql->createLazyConnection('root:mysql@localhost/shop_api');
+$uri = $_ENV['DB_USER']
+    . ':' . $_ENV['DB_PASS']
+    . '@' . $_ENV['DB_HOST']
+    . '/' . $_ENV['DB_NAME'];
+$connection = $mysql->createLazyConnection($uri);
+$connection->query('SHOW TABLES')
+    ->then(
+        function (\React\MySQL\QueryResult $result) {
+            print_r($result->resultRows);
+        }
+    );
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
 $routes->get('/products', new GetAllProducts());
