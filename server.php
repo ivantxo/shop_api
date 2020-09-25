@@ -12,12 +12,13 @@ use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteParser\Std;
 
 
+use App\Core\Router;
+use App\Core\ErrorHandler;
 use App\Products\Controller\GetAllProducts;
 use App\Products\Controller\CreateProduct;
 use App\Products\Controller\GetProductById;
 use App\Products\Controller\DeleteProduct;
 use App\Products\Controller\UpdateProduct;
-use App\Router;
 
 
 $loop = Factory::create();
@@ -31,6 +32,7 @@ $routes->put('/products/{id:\d+}', new UpdateProduct());
 
 $server = new Server(
     $loop,
+    new ErrorHandler(),
     new Router($routes)
 );
 
