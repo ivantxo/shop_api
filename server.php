@@ -14,6 +14,7 @@ use FastRoute\RouteParser\Std;
 
 use App\Core\Router;
 use App\Core\ErrorHandler;
+use App\Core\JsonRequestDecoder;
 use App\Products\Controller\GetAllProducts;
 use App\Products\Controller\CreateProduct;
 use App\Products\Controller\GetProductById;
@@ -33,6 +34,7 @@ $routes->put('/products/{id:\d+}', new UpdateProduct());
 $server = new Server(
     $loop,
     new ErrorHandler(),
+    new JsonRequestDecoder(),
     new Router($routes)
 );
 
