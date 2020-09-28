@@ -23,6 +23,8 @@ use App\Products\Controller\CreateProduct;
 use App\Products\Controller\GetProductById;
 use App\Products\Controller\DeleteProduct;
 use App\Products\Controller\UpdateProduct;
+use App\Authentication\SignUpController;
+use App\Authentication\Storage as Users;
 
 
 $loop = Factory::create();
@@ -36,6 +38,7 @@ $uri = $_ENV['DB_USER']
     . '/' . $_ENV['DB_NAME'];
 $connection = $mysql->createLazyConnection($uri);
 $products = new Products($connection);
+$users = new Users($connection);
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
 $routes->get('/products', new GetAllProducts());
@@ -43,6 +46,8 @@ $routes->get('/products/{id:\d+}', new GetProductById());
 $routes->post('/products', new CreateProduct($products));
 $routes->delete('/products/{id:\d+}', new DeleteProduct());
 $routes->put('/products/{id:\d+}', new UpdateProduct());
+
+$routes->post('/auth/signup', new SignUpController($users));
 
 $server = new Server(
     $loop,
