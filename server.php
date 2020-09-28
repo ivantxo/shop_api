@@ -17,6 +17,7 @@ use Dotenv\Dotenv;
 use App\Core\Router;
 use App\Core\ErrorHandler;
 use App\Core\JsonRequestDecoder;
+use App\Products\Storage as Products;
 use App\Products\Controller\GetAllProducts;
 use App\Products\Controller\CreateProduct;
 use App\Products\Controller\GetProductById;
@@ -34,17 +35,12 @@ $uri = $_ENV['DB_USER']
     . '@' . $_ENV['DB_HOST']
     . '/' . $_ENV['DB_NAME'];
 $connection = $mysql->createLazyConnection($uri);
-$connection->query('SHOW TABLES')
-    ->then(
-        function (\React\MySQL\QueryResult $result) {
-            print_r($result->resultRows);
-        }
-    );
+$products = new Products($connection);
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
 $routes->get('/products', new GetAllProducts());
 $routes->get('/products/{id:\d+}', new GetProductById());
-$routes->post('/products', new CreateProduct());
+$routes->post('/products', new CreateProduct($products));
 $routes->delete('/products/{id:\d+}', new DeleteProduct());
 $routes->put('/products/{id:\d+}', new UpdateProduct());
 

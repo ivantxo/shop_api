@@ -28,4 +28,14 @@ class JsonResponse
     {
         return self::response(500, ['message' => $reason]);
     }
+
+    public static function created($data): Response
+    {
+        return self::response(201, $data);
+    }
+
+    public static function badRequest(array $errors): Response
+    {
+        return self::response(400, ['errors' => $errors]);
+    }
 }
