@@ -38,9 +38,6 @@ final class Input
                 Validator::notBlank()
             )
         )->setName('price');
-        $validator = Validator::allOf(
-            $nameValidator, $priceValidator
-        );
         Validator::allOf($nameValidator, $priceValidator)->assert($this->request->getParsedBody());
     }
 
