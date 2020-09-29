@@ -6,7 +6,8 @@
     "doctrine/migrations": "^3.",
     "react/mysql": "^0.5.4",
     "vlucas/phpdotenv": "^5.1",
-    "respect/validation": "^2.0"
+    "respect/validation": "^2.0",
+    "firebase/php-jwt": "^5.2"
   },
   "autoload": {
     "psr-4": {

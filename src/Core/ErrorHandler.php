@@ -35,6 +35,7 @@ final class ErrorHandler
     public function handleThrowable(Throwable $error): Response
     {
         echo 'Error: ', $error->getTraceAsString(), PHP_EOL;
+
         return JsonResponse::internalServerError($error->getMessage());
     }
 }

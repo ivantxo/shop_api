@@ -38,4 +38,9 @@ class JsonResponse
     {
         return self::response(400, ['errors' => $errors]);
     }
+
+    public static function unauthorised(): Response
+    {
+        return self::response(401);
+    }
 }
