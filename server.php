@@ -27,6 +27,7 @@ use App\Authentication\SignUpController;
 use App\Authentication\Storage as Users;
 use App\Authentication\Authenticator;
 use App\Authentication\SignInController;
+use App\Authentication\Guard;
 
 $loop = Factory::create();
 
@@ -41,11 +42,12 @@ $connection = $mysql->createLazyConnection($uri);
 $products = new Products($connection);
 $users = new Users($connection);
 $authenticator = new Authenticator($users, $_ENV['JWT_KEY']);
+$guard = new Guard($_ENV['JWT_KEY']);
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
 $routes->get('/products', new GetAllProducts());
 $routes->get('/products/{id:\d+}', new GetProductById());
-$routes->post('/products', new CreateProduct($products));
+$routes->post('/products', $guard->protect(new CreateProduct($products)));
 $routes->delete('/products/{id:\d+}', new DeleteProduct());
 $routes->put('/products/{id:\d+}', new UpdateProduct());
 
