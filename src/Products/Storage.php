@@ -50,4 +50,29 @@ final class Storage
                 }
             );
     }
+
+    public function getAll(): PromiseInterface
+    {
+        return $this->connection
+            ->query('SELECT id, name, price FROM products')
+            ->then(
+                function (QueryResult $result) {
+                    return array_map(
+                        function ($row) {
+                            return $this->mapProduct($row);
+                        },
+                        $result->resultRows
+                    );
+                }
+            );
+    }
+
+    private function mapProduct(array $row): Product
+    {
+        return new Product(
+            (int)$row['id'],
+            $row['name'],
+            (float)$row['price']
+        );
+    }
 }

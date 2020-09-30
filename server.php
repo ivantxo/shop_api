@@ -45,7 +45,7 @@ $authenticator = new Authenticator($users, $_ENV['JWT_KEY']);
 $guard = new Guard($_ENV['JWT_KEY']);
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
-$routes->get('/products', new GetAllProducts());
+$routes->get('/products', new GetAllProducts($products));
 $routes->get('/products/{id:\d+}', new GetProductById($products));
 $routes->post('/products', $guard->protect(new CreateProduct($products)));
 $routes->delete('/products/{id:\d+}', new DeleteProduct());
