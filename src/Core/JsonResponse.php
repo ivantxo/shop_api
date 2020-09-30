@@ -43,4 +43,9 @@ class JsonResponse
     {
         return self::response(401);
     }
+
+    public static function notFound(): Response
+    {
+        return self::response(404);
+    }
 }

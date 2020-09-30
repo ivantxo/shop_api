@@ -31,4 +31,23 @@ final class Storage
                 }
             );
     }
+
+    public function getById(int $id): PromiseInterface
+    {
+        return $this->connection
+            ->query('SELECT id, name, price FROM products WHERE id = ?', [$id])
+            ->then(
+                function (QueryResult $result) {
+                    if (empty($result->resultRows)) {
+                        throw new ProductNotFound();
+                    }
+                    $row = $result->resultRows[0];
+                    return new Product(
+                        (int)$row['id'],
+                        $row['name'],
+                        (float)$row['price']
+                    );
+                }
+            );
+    }
 }
