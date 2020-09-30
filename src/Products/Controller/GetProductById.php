@@ -13,7 +13,7 @@ use App\Products\Controller\Output\Product as Output;
 use App\Products\Controller\Output\Request;
 
 
-class GetProductById
+final class GetProductById
 {
     /**
      * @var Storage $storage

@@ -7,7 +7,7 @@ namespace App\Core;
 use React\Http\Message\Response;
 
 
-class JsonResponse
+final class JsonResponse
 {
     private static function response(int $statusCode, $data = null): Response
     {

@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use App\Core\JsonResponse;
 
 
-class DeleteProduct
+final class DeleteProduct
 {
     public function __invoke(ServerRequestInterface $request, string $id)
     {

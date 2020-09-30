@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use App\Core\JsonResponse;
 
 
-class UpdateProduct
+final class UpdateProduct
 {
     public function __invoke(ServerRequestInterface $request, string $id)
     {
