@@ -24,6 +24,7 @@ use App\Products\Controller\GetProductById;
 use App\Products\Controller\DeleteProduct;
 use App\Products\Controller\UpdateProduct;
 use App\Orders\Storage as Orders;
+use App\Orders\Controller\GetAllOrders;
 use App\Orders\Controller\CreateOrder;
 use App\Authentication\SignUpController;
 use App\Authentication\Storage as Users;
@@ -57,6 +58,7 @@ $routes->delete('/products/{id:\d+}', new DeleteProduct($products));
 $routes->put('/products/{id:\d+}', new UpdateProduct($products));
 
 // orders routes
+$routes->get('/orders', new GetAllOrders($orders));
 $routes->post('/orders', new CreateOrder($orders));
 
 $routes->post('/auth/signup', new SignUpController($users));
