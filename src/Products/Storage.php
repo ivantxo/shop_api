@@ -67,6 +67,19 @@ final class Storage
             );
     }
 
+    public function delete(int $id): PromiseInterface
+    {
+        return $this->connection
+            ->query('DELETE FROM products WHERE id = ?', [$id])
+            ->then(
+                function (QueryResult $result) {
+                    if ($result->affectedRows === 0) {
+                        throw new ProductNotFound();
+                    }
+                }
+            );
+    }
+
     private function mapProduct(array $row): Product
     {
         return new Product(

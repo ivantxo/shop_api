@@ -48,4 +48,9 @@ final class JsonResponse
     {
         return self::response(404);
     }
+
+    public static function noContent(): Response
+    {
+        return self::response(204);
+    }
 }
