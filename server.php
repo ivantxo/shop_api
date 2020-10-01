@@ -23,6 +23,8 @@ use App\Products\Controller\CreateProduct;
 use App\Products\Controller\GetProductById;
 use App\Products\Controller\DeleteProduct;
 use App\Products\Controller\UpdateProduct;
+use App\Orders\Storage as Orders;
+use App\Orders\Controller\CreateOrder;
 use App\Authentication\SignUpController;
 use App\Authentication\Storage as Users;
 use App\Authentication\Authenticator;
@@ -40,16 +42,22 @@ $uri = $_ENV['DB_USER']
     . '/' . $_ENV['DB_NAME'];
 $connection = $mysql->createLazyConnection($uri);
 $products = new Products($connection);
+$orders = new Orders($connection);
 $users = new Users($connection);
 $authenticator = new Authenticator($users, $_ENV['JWT_KEY']);
 $guard = new Guard($_ENV['JWT_KEY']);
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
+
+// products routes
 $routes->get('/products', new GetAllProducts($products));
 $routes->get('/products/{id:\d+}', new GetProductById($products));
 $routes->post('/products', $guard->protect(new CreateProduct($products)));
 $routes->delete('/products/{id:\d+}', new DeleteProduct($products));
 $routes->put('/products/{id:\d+}', new UpdateProduct($products));
+
+// orders routes
+$routes->post('/orders', new CreateOrder($orders));
 
 $routes->post('/auth/signup', new SignUpController($users));
 $routes->post('/auth/signin', new SignInController($authenticator));
