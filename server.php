@@ -49,7 +49,7 @@ $routes->get('/products', new GetAllProducts($products));
 $routes->get('/products/{id:\d+}', new GetProductById($products));
 $routes->post('/products', $guard->protect(new CreateProduct($products)));
 $routes->delete('/products/{id:\d+}', new DeleteProduct($products));
-$routes->put('/products/{id:\d+}', new UpdateProduct());
+$routes->put('/products/{id:\d+}', new UpdateProduct($products));
 
 $routes->post('/auth/signup', new SignUpController($users));
 $routes->post('/auth/signin', new SignInController($authenticator));
