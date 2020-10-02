@@ -59,7 +59,7 @@ $routes->put('/products/{id:\d+}', new UpdateProduct($products));
 
 // orders routes
 $routes->get('/orders', new GetAllOrders($orders));
-$routes->post('/orders', new CreateOrder($orders));
+$routes->post('/orders', new CreateOrder($orders, $products));
 
 $routes->post('/auth/signup', new SignUpController($users));
 $routes->post('/auth/signin', new SignInController($authenticator));
