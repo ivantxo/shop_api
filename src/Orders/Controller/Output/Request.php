@@ -39,4 +39,9 @@ final class Request
     {
         return new self('GET', self::URI);
     }
+
+    public static function deleteOrder(int $id): self
+    {
+        return new self('DELETE', self::URI . $id);
+    }
 }

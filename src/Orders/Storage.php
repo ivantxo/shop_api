@@ -54,6 +54,20 @@ final class Storage
             );
     }
 
+    public function getById(int $id): PromiseInterface
+    {
+        return $this->connection
+            ->query('SELECT id, product_id, quantity FROM orders WHERE id = ?', [$id])
+            ->then(
+                function (QueryResult $result) {
+                    if (empty($result->resultRows)) {
+                        throw new OrderNotFound();
+                    }
+                    return $this->mapOrder($result->resultRows[0]);
+                }
+            );
+    }
+
     private function mapOrder(array $row): Order
     {
         return new Order(
