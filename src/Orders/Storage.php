@@ -68,6 +68,17 @@ final class Storage
             );
     }
 
+    public function delete(int $id): PromiseInterface
+    {
+        return $this->getById($id)
+            ->then(
+                function (Order $order) {
+                    return $this->connection
+                        ->query('DELETE FROM orders WHERE id = ?', [$order->id]);
+                }
+            );
+    }
+
     private function mapOrder(array $row): Order
     {
         return new Order(

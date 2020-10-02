@@ -30,6 +30,15 @@ final class Request
         $this->body = $body;
     }
 
+    public static function createOrder(): self
+    {
+        return new self(
+            'POST',
+            self::URI,
+            ['productId' => 'integer', 'quantity' => 'integer']
+        );
+    }
+
     public static function detailedOrder(int $id): self
     {
         return new self('GET', self::URI . $id);
