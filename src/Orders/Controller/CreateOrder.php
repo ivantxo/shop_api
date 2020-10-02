@@ -8,6 +8,8 @@ use App\Core\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use App\Orders\Storage;
 use App\Orders\Order;
+use App\Orders\Controller\Output\Order as Output;
+use App\Orders\Controller\Output\Request;
 
 
 final class CreateOrder
@@ -29,7 +31,13 @@ final class CreateOrder
         return $this->storage->create($productId, $quantity)
             ->then(
                 function (Order $order) {
-                    return JsonResponse::created($order);
+                    $response = [
+                        'order' => Output::fromEntity(
+                            $order,
+                            Request::listOrders()
+                        )
+                    ];
+                    return JsonResponse::created($response);
                 }
             );
     }

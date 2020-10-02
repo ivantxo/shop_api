@@ -34,4 +34,9 @@ final class Request
     {
         return new self('GET', self::URI . $id);
     }
+
+    public static function listOrders(): self
+    {
+        return new self('GET', self::URI);
+    }
 }
