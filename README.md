@@ -8,7 +8,7 @@ In this small project I will build a small RESTful API with authentication using
 
 ```bash
 $ composer update
-$ php index.php
+$ php ./vendor/bin/php-watcher server.php
 ```
 
 ## Requisites
