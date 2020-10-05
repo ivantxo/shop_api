@@ -17,12 +17,14 @@ use Dotenv\Dotenv;
 use App\Core\Router;
 use App\Core\ErrorHandler;
 use App\Core\JsonRequestDecoder;
+use React\Filesystem\Filesystem;
 use App\Products\Storage as Products;
 use App\Products\Controller\GetAllProducts;
 use App\Products\Controller\CreateProduct;
 use App\Products\Controller\GetProductById;
 use App\Products\Controller\DeleteProduct;
 use App\Products\Controller\UpdateProduct;
+use App\Core\Uploader;
 use App\Orders\Storage as Orders;
 use App\Orders\Controller\GetAllOrders;
 use App\Orders\Controller\CreateOrder;
@@ -45,6 +47,8 @@ $uri = $_ENV['DB_USER']
     . '/' . $_ENV['DB_NAME'];
 $connection = $mysql->createLazyConnection($uri);
 $products = new Products($connection);
+$filesystem = Filesystem::create($loop);
+$uploader = new Uploader($filesystem, __DIR__);
 $orders = new Orders($connection);
 $users = new Users($connection);
 $authenticator = new Authenticator($users, $_ENV['JWT_KEY']);
@@ -55,7 +59,7 @@ $routes = new RouteCollector(new Std(), new GroupCountBased());
 // products routes
 $routes->get('/products', new GetAllProducts($products));
 $routes->get('/products/{id:\d+}', new GetProductById($products));
-$routes->post('/products', $guard->protect(new CreateProduct($products)));
+$routes->post('/products', new CreateProduct($products, $uploader));
 $routes->delete('/products/{id:\d+}', new DeleteProduct($products));
 $routes->put('/products/{id:\d+}', new UpdateProduct($products));
 

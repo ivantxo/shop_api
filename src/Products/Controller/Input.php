@@ -5,6 +5,7 @@ namespace App\Products\Controller;
 
 
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Respect\Validation\Validator;
 
 
@@ -21,6 +22,28 @@ final class Input
     }
 
     public function validate(): void
+    {
+        $this->validateFields();
+//        $this->validateUploadedFile();
+    }
+
+    public function price(): float
+    {
+        return (float)$this->request->getParsedBody()['price'];
+    }
+
+    public function name(): string
+    {
+        return $this->request->getParsedBody()['name'];
+    }
+
+    public function image(): ?UploadedFileInterface
+    {
+        $files = $this->request->getUploadedFiles();
+        return $files['image'] ?? null;
+    }
+
+    private function validateFields(): void
     {
         $nameValidator = Validator::key(
             'name',
@@ -41,13 +64,15 @@ final class Input
         Validator::allOf($nameValidator, $priceValidator)->assert($this->request->getParsedBody());
     }
 
-    public function price(): float
+    private function validateUploadedFile(): void
     {
-        return (float)$this->request->getParsedBody()['price'];
-    }
-
-    public function name(): string
-    {
-        return $this->request->getParsedBody()['name'];
+        if ($this->image() === null) {
+            return;
+        }
+        $imageValidator = Validator::anyOf(
+            Validator::mimetype('image/png'),
+            Validator::mimetype('image/jpg')
+        )->setName('image');
+        $imageValidator->assert($this->image()->getClientFilename());
     }
 }

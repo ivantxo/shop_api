@@ -21,13 +21,13 @@ final class Storage
         $this->connection = $connection;
     }
 
-    public function create(string $name, float $price): PromiseInterface
+    public function create(string $name, float $price, ?string $image): PromiseInterface
     {
         return $this->connection
-            ->query('INSERT INTO products (name, price) VALUES (?, ?)', [$name, $price])
+            ->query('INSERT INTO products (name, price, image) VALUES (?, ?, ?)', [$name, $price, $image])
             ->then(
-                function (QueryResult $result) use ($name, $price) {
-                    return new Product($result->insertId, $name, $price);
+                function (QueryResult $result) use ($name, $price, $image) {
+                    return new Product($result->insertId, $name, $price, $image);
                 }
             );
     }
@@ -35,18 +35,13 @@ final class Storage
     public function getById(int $id): PromiseInterface
     {
         return $this->connection
-            ->query('SELECT id, name, price FROM products WHERE id = ?', [$id])
+            ->query('SELECT id, name, price, image FROM products WHERE id = ?', [$id])
             ->then(
                 function (QueryResult $result) {
                     if (empty($result->resultRows)) {
                         throw new ProductNotFound();
                     }
-                    $row = $result->resultRows[0];
-                    return new Product(
-                        (int)$row['id'],
-                        $row['name'],
-                        (float)$row['price']
-                    );
+                    return $this->mapProduct($result->resultRows[0]);
                 }
             );
     }
@@ -54,7 +49,7 @@ final class Storage
     public function getAll(): PromiseInterface
     {
         return $this->connection
-            ->query('SELECT id, name, price FROM products')
+            ->query('SELECT id, name, price, image FROM products')
             ->then(
                 function (QueryResult $result) {
                     return array_map(
@@ -99,7 +94,8 @@ final class Storage
         return new Product(
             (int)$row['id'],
             $row['name'],
-            (float)$row['price']
+            (float)$row['price'],
+            $row['image']
         );
     }
 }
