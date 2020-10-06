@@ -25,6 +25,8 @@ use App\Products\Controller\GetProductById;
 use App\Products\Controller\DeleteProduct;
 use App\Products\Controller\UpdateProduct;
 use App\Core\Uploader;
+use App\StaticFiles\Controller as StaticFilesController;
+use App\StaticFiles\Webroot;
 use App\Orders\Storage as Orders;
 use App\Orders\Controller\GetAllOrders;
 use App\Orders\Controller\CreateOrder;
@@ -53,6 +55,7 @@ $orders = new Orders($connection);
 $users = new Users($connection);
 $authenticator = new Authenticator($users, $_ENV['JWT_KEY']);
 $guard = new Guard($_ENV['JWT_KEY']);
+$webRoot = new Webroot($filesystem, __DIR__);
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
 
@@ -62,6 +65,8 @@ $routes->get('/products/{id:\d+}', new GetProductById($products));
 $routes->post('/products', new CreateProduct($products, $uploader));
 $routes->delete('/products/{id:\d+}', new DeleteProduct($products));
 $routes->put('/products/{id:\d+}', new UpdateProduct($products));
+
+$routes->get('/uploads/{file:.*\.\w+}', new StaticFilesController($webRoot));
 
 // orders routes
 $routes->get('/orders', new GetAllOrders($orders));

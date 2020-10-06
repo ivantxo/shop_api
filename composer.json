@@ -8,7 +8,8 @@
     "vlucas/phpdotenv": "^5.1",
     "respect/validation": "^2.0",
     "firebase/php-jwt": "^5.2",
-    "react/filesystem": "^0.1.2"
+    "react/filesystem": "^0.1.2",
+    "narrowspark/mimetypes": "^1.6"
   },
   "autoload": {
     "psr-4": {

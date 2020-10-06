@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "570b49fc219a0a8bb94b41e2f80acef9",
+    "content-hash": "999448dc4108b2629e0e8ab9cbffe428",
     "packages": [
         {
             "name": "alecrabbit/php-cli-snake",
@@ -990,6 +990,60 @@
                 "zf"
             ],
             "time": "2020-09-14T14:23:00+00:00"
+        },
+        {
+            "name": "narrowspark/mimetypes",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/narrowspark/mimetypes.git",
+                "reference": "990cced3a92d4ffd348838338da44d547ee0c0fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/narrowspark/mimetypes/zipball/990cced3a92d4ffd348838338da44d547ee0c0fd",
+                "reference": "990cced3a92d4ffd348838338da44d547ee0c0fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "ext-fileinfo": "*",
+                "ext-json": "*",
+                "mindscreen/yarnlock": "^1.0.1",
+                "narrowspark/coding-standard": "^3.0.0",
+                "phpunit/phpunit": "^8.3.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Narrowspark\\MimeType\\": "src/"
+                },
+                "exclude-from-classmap": [
+                    "tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Bannert",
+                    "email": "d.bannert@anolilab.de",
+                    "homepage": "http://www.anolilab.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP MIME Types Guesser and extension mapping.",
+            "keywords": [
+                "guesser",
+                "mimetype",
+                "mimetypes",
+                "narrowspark"
+            ],
+            "time": "2020-01-06T20:43:25+00:00"
         },
         {
             "name": "nikic/fast-route",
